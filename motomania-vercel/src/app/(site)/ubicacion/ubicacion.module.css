@@ -1,0 +1,26 @@
+.hero { background:linear-gradient(135deg,#1a1a1a,#2c2c2c); padding:4rem 2rem; text-align:center; }
+.hero h1 { font-size:2.5rem; font-weight:900; color:#FFD700; margin-bottom:.75rem; }
+.hero p { color:rgba(255,255,255,.8); font-size:1.1rem; }
+.content { padding:4rem 2rem; }
+.grid { display:grid; grid-template-columns:1fr 1.4fr; gap:2rem; max-width:1100px; margin:0 auto; }
+.info { display:flex; flex-direction:column; gap:1.5rem; }
+.card { background:#fff; border:2px solid #f0f0f0; padding:1.75rem; border-radius:16px; }
+.card h2 { font-size:1.1rem; font-weight:800; margin-bottom:1rem; color:#1a1a1a; }
+.address { font-size:1.2rem; font-weight:600; color:#2c2c2c; line-height:1.6; margin-bottom:1rem; }
+.mapBtn { display:inline-block; background:#FFD700; color:#1a1a1a; padding:.6rem 1.2rem; border-radius:8px; font-weight:700; text-decoration:none; font-size:.9rem; transition:all .3s; }
+.mapBtn:hover { background:#FFC700; transform:translateY(-1px); }
+.horarios { list-style:none; display:flex; flex-direction:column; gap:.75rem; }
+.horarios li { display:flex; justify-content:space-between; padding:.5rem 0; border-bottom:1px solid #f0f0f0; font-size:.9rem; }
+.horarios li span:first-child { font-weight:600; }
+.cerrado span { color:#e53e3e; }
+.contactLinks { display:flex; flex-direction:column; gap:.75rem; }
+.wa,.fb { display:block; padding:.75rem 1rem; border-radius:10px; font-weight:600; text-decoration:none; font-size:.9rem; transition:all .3s; }
+.wa { background:#f0fff4; color:#276749; border:1px solid #c6f6d5; }
+.wa:hover { background:#25D366; color:#fff; }
+.fb { background:#ebf4ff; color:#1a56db; border:1px solid #bee3f8; }
+.fb:hover { background:#1877f2; color:#fff; }
+.mapWrapper { border-radius:16px; overflow:hidden; height:500px; box-shadow:0 8px 32px rgba(0,0,0,.1); }
+@media (max-width:768px) {
+  .grid { grid-template-columns:1fr; }
+  .mapWrapper { height:320px; }
+}
