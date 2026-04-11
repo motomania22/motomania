@@ -1,0 +1,9 @@
+.section { min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 3rem 1rem; background: #f8f9fa; }
+.card { background: #fff; padding: 2.5rem; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,.1); width: 100%; max-width: 460px; }
+.card h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.5rem; text-align: center; }
+.form { display: flex; flex-direction: column; }
+.btn { background: #FFD700; color: #1a1a1a; border: none; padding: 1rem; border-radius: 10px; font-weight: 800; font-size: 1rem; cursor: pointer; margin-top: .5rem; transition: all .3s; }
+.btn:hover:not(:disabled) { background: #FFC700; transform: translateY(-2px); }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+.links { text-align: center; margin-top: .75rem; font-size: .9rem; }
+.links a { color: #0455be; font-weight: 600; text-decoration: none; }
