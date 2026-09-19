@@ -11,6 +11,12 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  let mlSynced = 0
+  let mlError: string | null = null
+  let ecSynced = 0
+  let ecError: string | null = null
+
+  // --- Mercado Libre sync (independent: a failure here must not block EnvioCompras) ---
   try {
     let offset = 0
     const limit = 50
@@ -56,32 +62,49 @@ export async function GET(request: Request) {
     }))
 
     if (mlProducts.length > 0) {
-      const { error: mlError } = await supabaseAdmin
+      const { error } = await supabaseAdmin
         .from('ml_products')
         .upsert(mlProducts, { onConflict: 'id' })
-      if (mlError) throw mlError
+      if (error) throw error
     }
 
+    mlSynced = mlProducts.length
+  } catch (err: any) {
+    console.error('[sync-products][mercadolibre]', err)
+    mlError = err.message ?? String(err)
+  }
+
+  // --- EnvioCompras sync (independent: does not depend on any external API/token) ---
+  try {
     const ecFormatted = (ecProducts as any[]).map((p: any) => ({
       ...p,
       updated_at: new Date().toISOString(),
     }))
 
     if (ecFormatted.length > 0) {
-      const { error: ecError } = await supabaseAdmin
+      const { error } = await supabaseAdmin
         .from('ml_products')
         .upsert(ecFormatted, { onConflict: 'id' })
-      if (ecError) throw ecError
+      if (error) throw error
     }
 
-    return NextResponse.json({
-      ok: true,
-      ml_synced: mlProducts.length,
-      ec_synced: ecFormatted.length,
-      timestamp: new Date().toISOString(),
-    })
+    ecSynced = ecFormatted.length
   } catch (err: any) {
-    console.error('[sync-products]', err)
-    return NextResponse.json({ error: err.message }, { status: 500 })
+    console.error('[sync-products][enviocompras]', err)
+    ecError = err.message ?? String(err)
   }
+
+  const ok = !mlError && !ecError
+
+  return NextResponse.json(
+    {
+      ok,
+      ml_synced: mlSynced,
+      ml_error: mlError,
+      ec_synced: ecSynced,
+      ec_error: ecError,
+      timestamp: new Date().toISOString(),
+    },
+    { status: ok ? 200 : 207 }
+  )
 }
