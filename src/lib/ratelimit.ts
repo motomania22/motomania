@@ -1,9 +1,11 @@
 // Rate limiting with Upstash Redis
-// Falls back gracefully if Upstash is not configured
+// Falls back gracefully if Upstash is not configured OR unreachable
 
 let ratelimit: any = null
+let ratelimitUnavailable = false
 
 async function getRatelimit() {
+  if (ratelimitUnavailable) return null
   if (ratelimit) return ratelimit
   if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
     return null
@@ -21,9 +23,17 @@ async function getRatelimit() {
 }
 
 export async function checkRateLimit(identifier: string): Promise<{ success: boolean; remaining?: number }> {
-  const rl = await getRatelimit()
-  if (!rl) return { success: true } // Si no está configurado, permite todo
+  try {
+    const rl = await getRatelimit()
+    if (!rl) return { success: true } // Si no está configurado, permite todo
 
-  const result = await rl.limit(identifier)
-  return { success: result.success, remaining: result.remaining }
+    const result = await rl.limit(identifier)
+    return { success: result.success, remaining: result.remaining }
+  } catch (err) {
+    // Si Upstash falla o no responde (DNS, timeout, instancia borrada, etc.),
+    // no debe tumbar el login ni ninguna otra ruta protegida: permitimos el request.
+    console.error('[ratelimit] Upstash unreachable, failing open:', err)
+    ratelimitUnavailable = true
+    return { success: true }
+  }
 }
