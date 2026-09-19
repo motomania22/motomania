@@ -1,7 +1,7 @@
+import { createClient } from '@supabase/supabase-js'
 import { Metadata } from 'next'
 import { Product } from '@/types/product'
 import CatalogClient from '@/components/CatalogClient'
-import { supabase } from '@/lib/supabase'
 
 export const revalidate = 3600
 
@@ -13,6 +13,11 @@ export const metadata: Metadata = {
 }
 
 export default async function ProductosPage() {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
   const { data: products, error } = await supabase
     .from('ml_products')
     .select('*')
