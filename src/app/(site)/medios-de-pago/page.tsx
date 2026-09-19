@@ -42,15 +42,6 @@ export default function MediosDePagoPage() {
             </div>
           </div>
 
-          <div className={styles.card}>
-            <div className={styles.cardIcon}>💳</div>
-            <h2>Pietcard</h2>
-            <p>Aceptamos la tarjeta Pietcard con todos sus beneficios y cuotas especiales.</p>
-            <div className={styles.imgWrapper}>
-              <Image src="/img/pietcard.png" alt="Pietcard" width={160} height={80} style={{ objectFit: 'contain' }} />
-            </div>
-          </div>
-
         </div>
 
         <div className={styles.nota}>
