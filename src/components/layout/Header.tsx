@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
 const NAV_LINKS = [
+  { href: '/catalogo', label: 'Catálogo' },
   { href: '/beneficios', label: 'Beneficios' },
   { href: '/medios-de-pago', label: 'Medios de Pago' },
   { href: '/metodos-de-envio', label: 'Envíos' },
